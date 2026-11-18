@@ -24,6 +24,9 @@ the **Where to build next** button at the bottom right.
 MVP scope: **San Joaquin County** (Mountain House, Tracy, Lathrop, Manteca, Stockton, Lodi, …).
 The fire layers cover all of California.
 
+**Live site:** https://sreeharipa.github.io/marco-polo/ (rebuilt from `main` on every push by
+`.github/workflows/pages.yml`, with the map data from the release named in `fetch_data.sh`).
+
 ## Run it
 
 You need **Node.js 20+** (and `curl` + `unzip`, which macOS and most Linux systems already have).
