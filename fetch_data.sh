@@ -4,11 +4,12 @@
 # Usage: ./fetch_data.sh [release-tag]   (default: data-v8)
 set -euo pipefail
 cd "$(dirname "$0")"
+REPO="sreeharipa/marco-polo"
 TAG="${1:-data-v8}"
-URL="https://github.com/luketankh/ca-dev-explorer/releases/download/${TAG}/map-data.zip"
+URL="https://github.com/${REPO}/releases/download/${TAG}/map-data.zip"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
-echo "Downloading map data ($TAG, ~95 MB) ..."
+echo "Downloading map data ($TAG, ~95 MB) from $REPO ..."
 curl -fL --progress-bar -o "$tmp/map-data.zip" "$URL"
 mkdir -p web/public/data
 unzip -o -q "$tmp/map-data.zip" -d web/public/data
