@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Download the pre-built map data (PMTiles + GeoJSON, ~95 MB) from the GitHub release into
 # web/public/data, so the app runs without re-running the ~1 GB data pipeline.
-# Usage: ./fetch_data.sh [release-tag]   (default: data-v6)
+# Usage: ./fetch_data.sh [release-tag]   (default: data-v8)
 set -euo pipefail
 cd "$(dirname "$0")"
-REPO="sreeharipa/marco_polo"
-TAG="${1:-data-v6}"
+REPO="sreeharipa/marco-polo"
+TAG="${1:-data-v8}"
 URL="https://github.com/${REPO}/releases/download/${TAG}/map-data.zip"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT

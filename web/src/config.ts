@@ -8,24 +8,46 @@ export const DEFAULT_PLACE = "Mountain House";
 const base = import.meta.env.BASE_URL;
 export const DATA = {
   buildings: `pmtiles://${location.origin}${base}data/buildings.pmtiles`,
+  buildingsLow: `pmtiles://${location.origin}${base}data/buildings_low.pmtiles`,
   fires: `pmtiles://${location.origin}${base}data/fire_perimeters.pmtiles`,
-  firms: `pmtiles://${location.origin}${base}data/firms.pmtiles`,
   fhsz: `pmtiles://${location.origin}${base}data/fhsz.pmtiles`,
   places: `${base}data/places.geojson`,
   stats: `${base}data/stats.json`,
-  counties: `${base}data/counties.geojson`,
   arrows: `${base}data/growth_arrows.geojson`,
-  context: `${base}data/context.json`,
   recCells: `pmtiles://${location.origin}${base}data/recommend_cells.pmtiles`,
   recZones: `${base}data/recommend_zones.geojson`,
   recommend: `${base}data/recommend.json`,
-  steep: `${base}data/steep_terrain.geojson`,
+  flood: `pmtiles://${location.origin}${base}data/flood.pmtiles`,
+  flood200: `${base}data/flood_200yr.geojson`,
+  plans: `${base}data/general_plans.geojson`,
+  // latest USDA NAIP aerial imagery via USGS The National Map (public domain, no key); one vintage, not by year
+  aerial: "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}",
+  areas: `${base}data/areas.geojson`,
+  recRegionZones: `${base}data/recommend_region_zones.geojson`,
+  utilityLines: `${base}data/utility_lines.geojson`,
+  serviceAreas: `${base}data/service_areas.geojson`,
 };
 
-// NAIP vintages available for San Joaquin County on Microsoft Planetary Computer
-export const NAIP_YEARS = [2012, 2014, 2016, 2018, 2020, 2022];
 
 // Colour roles (sequential ramps, light basemap)
+/** General plan land-use classes (reference/general_plans), in legend order: [code, label, colour, housing note]. */
+export const PLAN_CLASSES: [number, string, string, string][] = [
+  [5, "High density residential (8+ homes/acre)", "#c9861a", "Housing is the planned use."],
+  [6, "Medium density residential (0.5–8 homes/acre)", "#eeb54a", "Housing is the planned use (typical suburban subdivisions)."],
+  [7, "Low density residential (2–20 acre lots)", "#f8dc86", "Housing on large rural lots; suburban densities would need a plan amendment."],
+  [13, "Very low density residential (20–160 acre lots)", "#fcf1c6", "Ranchettes; suburban densities would need a plan amendment."],
+  [12, "Mixed use", "#c75b8f", "Housing allowed alongside shops and offices."],
+  [11, "Planned development / specific plan", "#8fb3d9", "Often includes housing; check the specific plan."],
+  [10, "Urban reserve", "#cfc5b4", "Held for future city growth; usually needs a plan amendment or annexation first."],
+  [3, "High density commercial", "#d6504a", "Not planned for housing; needs a plan amendment."],
+  [4, "Low density commercial, schools & public", "#f0a39b", "Not planned for housing; needs a plan amendment."],
+  [2, "Industrial", "#8f79b8", "Not planned for housing; needs a plan amendment."],
+  [1, "Agricultural", "#c6dca5", "Farming; homes beyond a farmhouse need a plan amendment."],
+  [8, "Open space & public lands", "#69a468", "Not planned for development."],
+  [9, "Water", "#a6d4ea", "Water."],
+  [-1, "Other / not determined", "#e6e4de", "No class in the source data."],
+];
+
 export const COLORS = {
   // residential: one blue ramp, older = lighter, newer = darker (undated pre-2020 buildings use the lightest step)
   buildingRamp: [
@@ -72,9 +94,20 @@ export const COLORS = {
     [100, "#0d6b49"],
   ] as [number, string][],
   suitDark: "#0d6b49",
-  // terrain: brown ordinal pair
-  hillside: "#e2cfa8",
-  steep: "#a07d4f",
+  zoneHighlight: "#1baf7a", // glow around the zone picked in the report
+  powerLine: "#2f3640",      // electric transmission lines (charcoal)
+  gasLine: "#6d5bd0",        // natural gas transmission pipelines (dashed)
+  waterService: "#1593b8",   // community water system service areas
+  sewerService: "#6b8e23",   // sewer service areas (dashed outline)
+  // flood: one cyan ordinal ramp, darker = more likely to flood (kept off the building blues and the aqua suitability ramp)
+  flood: {
+    floodway: "#0a5f7a",
+    "100yr": "#2aa3c9",
+    "500yr": "#9fd8ea",
+    levee: "#d4edf5",
+  } as Record<string, string>,
+  floodLeveeLine: "#5fa9c2",
+  flood200: "#6f3fb0", // DWR 200-year floodplain outline (violet, dashed)
   text: "#0b0b0b",
   textSecondary: "#52514e",
 };
